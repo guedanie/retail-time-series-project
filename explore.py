@@ -36,3 +36,7 @@ def seasonal_decomposition(df, col, period):
     })
 
     decomposition.iloc[:,1:].plot()
+
+def plot_autocrrelation(df, target_variable):
+    pd.plotting.autocorrelation_plot(train["Weekly_Sales"])
+    
