@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import explore
-import acquire
 import prepare
 
 from math import sqrt
@@ -70,13 +69,7 @@ def prep_fb(df, target_variable):
     df.rename(columns = {target_variable: "y"}, inplace=True)
     return df
 
-def run_prophet(target_variable, cap, floor, initial, period, horizon):
-    df = prepare.wrangle_fitbit_data()
-    df = prep_fb(df, target_variable)
-
-    train = df[:"2018-10"]
-    validate = df["2018-11"]
-    test = df["2018-12"]
+def run_prophet(train, validate, test, target_variable, cap, floor, initial, period, horizon):
 
     train["cap"] = cap
     train["floor"] = floor
