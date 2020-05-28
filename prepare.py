@@ -33,6 +33,18 @@ def merge_df(sales, store, features):
     df = df.sort_index()
     return df
 
+def fix_time_lag(df):
+    new_df = pd.DataFrame()
+    store_numbers = df.Store.unique()
+    dept_numbers = df[df.Store == 4].Dept.unique()
+    for store in store_numbers:
+
+        for department in dept_numbers:
+            df_debug = df[(df.Store == store) & (df.Dept == department)]
+            df_debug = df_debug.groupby(df_debug.index).sum().resample("W").mean().ffill()
+            new_df = pd.concat([df_debug, new_df])
+    new_df = new_df.sort_index()
+    return new_df
 
 def wrangle_sales():
     sales, store, features = read_csv()
@@ -42,6 +54,8 @@ def wrangle_sales():
     # Impude markdown with zero
 
     df = df.fillna(0)
+
+    df = fix_time_lag(df)
 
     return df
 
